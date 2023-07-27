@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import inquirer from "inquirer";
 import { execSync } from "child_process";
-import { PackageManagerType, ProjectPromptType } from "./index.types";
+import { PackageManagerType, ProjectPromptType } from "./types/index.types";
 
 const program = new Command();
 
@@ -84,10 +84,10 @@ function initializeProject(project: ProjectPromptType) {
         createDir(project.folder);
         process.chdir(project.folder);
     }
-    // const dir = fs.opendirSync(project.folder) ;
+
     execSync(`npx degit https://github.com/sayad-mallllek/nestjs-template-with-aws.git -y --force `);
     execSync(PACKAGE_MANAGER_COMMANDS[project.packageManager].install);
-    console.log("done")
+    console.log("Project is done!")
 }
 
 const receiver = async () => {
