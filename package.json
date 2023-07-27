@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sayad-mallllek/test-cli.git"
+    "url": "git+https://github.com/sayad-mallllek/nest-bp.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sayad-mallllek/test-cli/issues"
+    "url": "https://github.com/sayad-mallllek/nest-bp/issues"
   },
-  "homepage": "https://github.com/sayad-mallllek/test-cli#readme",
+  "homepage": "https://github.com/sayad-mallllek/nest-bp#readme",
   "dependencies": {
     "commander": "^11.0.0",
     "figlet": "^1.6.0",
