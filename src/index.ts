@@ -85,9 +85,9 @@ function initializeProject(project: ProjectPromptType) {
         process.chdir(project.folder);
     }
     // const dir = fs.opendirSync(project.folder) ;
+    execSync(`npx degit https://github.com/sayad-mallllek/nestjs-template-with-aws.git -y --force `);
+    execSync(PACKAGE_MANAGER_COMMANDS[project.packageManager].install);
     console.log("done")
-    // execSync(`npx degit https://github.com/sayad-mallllek/nestjs-template-with-aws.git ${project.folder} -y --force `);
-    // execSync(PACKAGE_MANAGER_COMMANDS[project.packageManager].install);
 }
 
 const receiver = async () => {
