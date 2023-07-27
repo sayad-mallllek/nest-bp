@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import inquirer from "inquirer";
 import { execSync } from "child_process";
-import { ProjectPromptType } from "./index.types";
+import { PackageManagerType, ProjectPromptType } from "./index.types";
 
 const program = new Command();
 
@@ -22,9 +22,11 @@ const PACKAGE_MANAGER_COMMANDS = {
     pnpm: {
         install: "pnpm install",
     },
-}
+};
 
-console.log(figlet.textSync("Dir Manager"));
+console.log(figlet.textSync("Nest Boilerplate", {
+    width: 40,
+}));
 
 async function listDirContents(filepath: string) {
     try {
@@ -49,44 +51,74 @@ function createDir(filepath: string) {
     }
 }
 
+// function openDir(filepath: string) {
+//     if (fs.existsSync(filepath)) {
+//         console.log("Opening the directory...");
+//         execSync(`cd ${filepath}`);
+//     } else {
+//         console.error("The directory does not exist!");
+//     }
+// }
+
 function createFile(filepath: string) {
     fs.openSync(filepath, "w");
     console.log("An empty file has been created");
 }
 
+function getAvailablePackageManagers() {
+    const availableManagers: PackageManagerType[] = ["npm", "yarn", "pnpm"];
+    let packageManagers: PackageManagerType[] = [];
+
+    availableManagers.forEach((manager) => {
+        try {
+            execSync(`${manager} -v`);
+            packageManagers.push(manager);
+        } catch (error) { }
+    });
+
+    return availableManagers
+}
+
+function initializeProject(project: ProjectPromptType) {
+    if (project.folder) {
+        createDir(project.folder);
+        process.chdir(project.folder);
+    }
+    // const dir = fs.opendirSync(project.folder) ;
+    console.log("done")
+    // execSync(`npx degit https://github.com/sayad-mallllek/nestjs-template-with-aws.git ${project.folder} -y --force `);
+    // execSync(PACKAGE_MANAGER_COMMANDS[project.packageManager].install);
+}
+
 const receiver = async () => {
+    let packageManagers = getAvailablePackageManagers();
 
     const project: ProjectPromptType = await inquirer.prompt([
         {
             type: "input",
-            name: "name",
+            name: "folder",
             message: "What is the name of your project?",
-            suffix: " (Leave a blank if you want to install in the current directory)",
+            suffix:
+                " (Leave a blank if you want to install in the current directory)",
         },
         {
             type: "list",
-            name: "action",
-            message: "What do you want to do?",
-            choices: ["create a new project", "create a new file", "create a new directory", "list directory contents"],
+            name: "packageManager",
+            message: "Which package manager do you want to use?",
+            choices: packageManagers,
         },
         {
             type: "list",
-            name: "action",
+            name: "aws",
             message: "Do you want to integrate it with AWS?",
             choices: ["yes", "no"],
-            default: "yes"
+            default: "yes",
         },
     ]);
 
-    // if (projectName.name) createDir(projectName.name);
-
-    // execSync('npx degit https://github.com/sayad-mallllek/nestjs-template-with-aws.git -y --force ');
-    // execSync(`${PACKAGE_MANAGER_COMMANDS[packageManager.action].install}`);
+    initializeProject(project);
 
 
-}
+};
 
-program
-    .version("1.0.0")
-    .action(receiver)
-    .parse(process.argv);
+program.version("1.0.0").action(receiver).parse(process.argv);
