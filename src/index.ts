@@ -76,7 +76,7 @@ function getAvailablePackageManagers() {
         } catch (error) { }
     });
 
-    return availableManagers
+    return packageManagers
 }
 
 function initializeProject(project: ProjectPromptType) {
